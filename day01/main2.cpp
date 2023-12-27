@@ -66,7 +66,7 @@ int main() {
                 line.rfind("six"), line.rfind("seven"), line.rfind("eight"), line.rfind("nine")
             };
 
-            //keep the char that appears first
+            //keep the char that appears last
             int second_index = find_maximum_index(find_second, line);
 
             char second = index_to_char(find_second, second_index, line);
