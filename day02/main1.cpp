@@ -4,6 +4,16 @@
 
 using namespace std;
 
+long find_digit(size_t pos, string line, char c){ //return digit after char
+    size_t begin = line.rfind(c, pos);
+    size_t end = line.find(c,pos);
+
+    string number = line.substr(begin, end-begin);
+
+    char* output;
+    return strtol(number.c_str(),&output, 10);
+}
+
 int main(){
     long res = 0;
 
@@ -17,54 +27,31 @@ int main(){
             bool possible_red = true;
 
             for (size_t red = line.find("red"); red != line.npos; red = line.find("red", red+1)) {
-                size_t begin = line.rfind(' ', red-2);
+                long digit = find_digit(red-2, line, ' ');
 
-                string number = line.substr(begin, red-begin);
-
-                char* output;
-                long digit = strtol(number.c_str(),&output, 10);
-
-                if (digit >12) {
-                    possible_red = false;
-                    break;
-                }
+                possible_red &= (digit <= 12);
             }
 
             //check if green is impossible
             bool possible_green = true;
 
             for (size_t green = line.find("green"); green != line.npos; green = line.find("green", green+1)) {
-                size_t begin = line.rfind(' ', green-2);
+                long digit = find_digit(green-2, line, ' ');
 
-                string number = line.substr(begin, green-begin);
-
-                char* output;
-                long digit = strtol(number.c_str(),&output, 10);
-                
-                if (digit > 13) {
-                    possible_green = false;
-                    break;
-                }
+                possible_green &= (digit <=13);
             }
 
             //check if blue is impossible
             bool possible_blue = true;
 
             for (size_t blue = line.find("blue"); blue != line.npos; blue = line.find("blue", blue+1)) {
-                size_t begin = line.rfind(' ', blue-2);
+                long digit = find_digit(blue-2, line, ' ');
 
-                string number = line.substr(begin, blue-begin);
-
-                char* output;
-                long digit = strtol(number.c_str(),&output, 10);
-                
-                if (digit >14) {
-                    possible_blue = false;
-                    break;
-                }
+                possible_blue &= (digit <=14);
             }
 
             if (possible_blue && possible_green && possible_red) {
+                //get id of game
                 size_t id_end = line.find(':', 5);
 
                 string number = line.substr(4, id_end-4);

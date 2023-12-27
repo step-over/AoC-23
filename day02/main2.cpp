@@ -4,6 +4,16 @@
 
 using namespace std;
 
+long find_digit(size_t pos, string line, char c){ //return digit after char
+    size_t begin = line.rfind(c, pos);
+    size_t end = line.find(c,pos);
+
+    string number = line.substr(begin, end-begin);
+
+    char* output;
+    return strtol(number.c_str(),&output, 10);
+}
+
 int main(){
     long res = 0;
 
@@ -17,12 +27,7 @@ int main(){
             long min_red = -1;
 
             for (size_t red = line.find("red"); red != line.npos; red = line.find("red", red+1)) {
-                size_t begin = line.rfind(' ', red-2);
-
-                string number = line.substr(begin, red-begin);
-
-                char* output;
-                long red_amount = strtol(number.c_str(),&output, 10);
+                long red_amount = find_digit(red-2, line, ' ');
 
                 if (min_red == -1 || red_amount > min_red) min_red = red_amount;
             }
@@ -31,12 +36,7 @@ int main(){
             long min_green = -1;
 
             for (size_t green = line.find("green"); green != line.npos; green = line.find("green", green+1)) {
-                size_t begin = line.rfind(' ', green-2);
-
-                string number = line.substr(begin, green-begin);
-
-                char* output;
-                long green_amount = strtol(number.c_str(),&output, 10);
+                long green_amount = find_digit(green-2, line, ' ');
                 
                 if (min_green == -1|| green_amount > min_green) min_green = green_amount;
             }
@@ -45,12 +45,7 @@ int main(){
             long min_blue = -1;
 
             for (size_t blue = line.find("blue"); blue != line.npos; blue = line.find("blue", blue+1)) {
-                size_t begin = line.rfind(' ', blue-2);
-
-                string number = line.substr(begin, blue-begin);
-
-                char* output;
-                long blue_amount = strtol(number.c_str(),&output, 10);
+                long blue_amount = find_digit(blue-2, line, ' ');
                 
                 if (min_blue == -1 || blue_amount > min_blue) min_blue = blue_amount;
             }
