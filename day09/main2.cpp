@@ -32,7 +32,7 @@ int main(){
         int factor = -1;
 
         //calculate difference of each number until is all zeroes
-        //next value can be calculated adding alternated the first number of every difference
+        //next value can be calculated adding alternately the first number of every difference
         //next value = history1.front - history2.front + history3.front - history4.front + ...
 
         while (! all_of(history.begin(), history.end(), [](long &l) { return l == 0 ;} )){
