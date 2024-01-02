@@ -17,7 +17,8 @@ vector<string> vertical_pattern (vector<string> &pattern) {
     vector<string> res = vector<string>(pattern[0].size());
 
     for (int i = 0; i < pattern[0].size(); i++) {
-        for_each(pattern.begin(), pattern.end(), [i, &res](string s) { res[i].push_back(s[i]); });
+        for_each(pattern.begin(), pattern.end(), [i, &res](string s) { 
+            res[i].push_back(s[i]); });
     }
 
     return res;
@@ -31,7 +32,7 @@ bool differ_at_one (string &s, string &s2) {
     return smudge_found;
 }
 
-bool equal_or_differ_at_one (string &s, string &s2) {
+bool equal_or_differ_at_one (string &s, string &s2) { 
     if (smudge_found) return s == s2;
     else return s == s2 || differ_at_one(s,s2);
 }
@@ -117,21 +118,6 @@ void fix_smudge (vector<string> &pattern) {
     }
 }
 
-long calculate_reflection (vector<int> &hor, vector<int> &ver, vector<string> &pattern) {
-    vector<int> horiz = reflection(pattern, hor);
-            
-    vector<string> vertical_pat = vertical_pattern(pattern);
-    vector<int> vert = reflection(vertical_pat, ver);
-
-    int horizontal_value = accumulate(horiz.begin(), horiz.end(), 0);
-    int vertical_value = accumulate(vert.begin(), vert.end(), 0);
-
-    hor.insert(hor.end(), horiz.begin(), horiz.end());
-    ver.insert(ver.end(), vert.begin(), vert.end());
-            
-    return (vertical_value + horizontal_value*100);
-}
-
 int main() {
     long res = 0;
     
@@ -145,13 +131,23 @@ int main() {
             pattern.push_back(line);
         } else {
             //save original horizontal and vertical reflection line
-            vector<int> horiz_orig, vert_orig; 
-            calculate_reflection (horiz_orig, vert_orig, pattern);
+            vector<int> hor_or = reflection(pattern, {});
+            
+            vector<string> vertical_pat = vertical_pattern(pattern);
+            vector<int> vert_or = reflection(vertical_pat, {});
 
             fix_smudge(pattern);
 
             //calculate new reflection line
-            res += calculate_reflection(horiz_orig, vert_orig, pattern);
+            vector<int> horiz = reflection(pattern, hor_or);
+            
+            vertical_pat = vertical_pattern(pattern);
+            vector<int> vert = reflection(vertical_pat, vert_or);
+
+            int horizontal_value = accumulate(horiz.begin(), horiz.end(), 0);
+            int vertical_value = accumulate(vert.begin(), vert.end(), 0);
+
+            res += (vertical_value + horizontal_value*100);
 
             pattern.clear();
         }
